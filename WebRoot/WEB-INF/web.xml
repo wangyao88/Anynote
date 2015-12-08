@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+   <!--  <display-name>Struts Examples Application</display-name> -->
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+        </param-value>
+    </context-param>
+
+	<!-- Character Encoding filter -->  
+    <filter>  
+        <filter-name>encodingFilter</filter-name>  
+        <filter-class>  
+            org.springframework.web.filter.CharacterEncodingFilter  
+        </filter-class>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>UTF-8</param-value>  
+        </init-param>  
+    </filter>
+    <!-- Character Encoding filter 过滤器映射 -->
+    <filter-mapping>  
+        <filter-name>encodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
+    
+    <!-- LoginFilter -->  
+    <filter>  
+        <filter-name>loginFilter</filter-name>  
+        <filter-class>  
+            global.filter.LoginFilter 
+        </filter-class>
+        <init-param>
+			<param-name>unfilteredURIs</param-name>
+			<param-value>
+	      			(.*/websrc/js/.*)|(.*/websrc/css/.*)|(.*/websrc/image/.*)|(.*/websrc/page/common/.*)|(.*/websrc/file/.*)|(.*loginAction.do*)
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>loginPageUrls</param-name>
+			<param-value>
+	      			(^.*websrc/page/login/login.jsp$)|(^.*Anynote/$)|(^.*Anynote/index.jsp$)
+			</param-value>
+		</init-param>
+    </filter>
+    <!-- LoginFilter 过滤器映射 -->
+    <filter-mapping>  
+        <filter-name>loginFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>	
+    <!-- Standard Action Servlet Configuration (with debugging) -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/struts-config.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>2</param-value>
+		</init-param>
+		<init-param>
+			<param-name>detail</param-name>
+			<param-value>2</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<!-- DWR Servlet Configuration (with debugging) -->  
+    <servlet>  
+        <servlet-name>dwr</servlet-name>  
+        <servlet-class>  
+            org.directwebremoting.spring.DwrSpringServlet  
+        </servlet-class>  
+        <init-param>  
+            <param-name>debug</param-name>  
+            <param-value>true</param-value>  
+        </init-param>  
+    </servlet>
+	<!-- Standard Action Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	<!-- session -->
+	<session-config>
+		<session-timeout>-1</session-timeout>
+	</session-config>
+	
+   	<!-- welcome -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<!-- DWR Servlet Mapping -->
+    <servlet-mapping>  
+        <servlet-name>dwr</servlet-name>  
+        <url-pattern>/dwr/*</url-pattern>  
+    </servlet-mapping>
+    
+    <resource-ref>
+	    <description>DB Connection</description>
+	    <res-ref-name>Anynote</res-ref-name>
+	    <res-type>javax.sql.DataSource</res-type>
+	    <res-auth>Container</res-auth>
+    </resource-ref>
+</web-app>

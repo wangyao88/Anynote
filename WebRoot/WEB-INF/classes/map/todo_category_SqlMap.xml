@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="an_todo_category" >
+	<!-- 查询结果对象Map -->
+	<resultMap id="baseResultMap" class="domain.TodoCategory" >
+		<result column="CATEGORY_ID" property="categoryId" jdbcType="INTEGER" />
+		<result column="CATEGORY_NAME" property="categoryName" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="CHAR" />
+		<result column="DELFLAG" property="delflag" jdbcType="CHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 任务分类ID -->
+			<isNotNull prepend="and" property="categoryId">
+				CATEGORY_ID = #categoryId#
+			</isNotNull>
+			<!-- 任务分类名称 -->
+			<isNotNull prepend="and" property="categoryName">
+				CATEGORY_NAME = #categoryName#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			CATEGORY_ID,				<!-- 任务分类ID -->
+			CATEGORY_NAME,				<!-- 任务分类名称 -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flog -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		from an_todo_category
+		where CATEGORY_ID = #categoryId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.TodoCategory" resultMap="baseResultMap">
+		select 
+			CATEGORY_ID,				<!-- 任务分类ID -->
+			CATEGORY_NAME,				<!-- 任务分类名称 -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flog -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		from an_todo_category
+		<include refid="an_todo_category.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.TodoCategory" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_todo_category
+		<include refid="an_todo_category.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.TodoCategory">
+    	insert into an_todo_category (
+			CATEGORY_NAME,				<!-- 任务分类名称 -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flog -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		)
+		values (
+			#categoryName#, 			<!-- 任务分类名称 -->
+			#status#,					<!-- 状态 -->
+			#delflag#,					<!-- 删除Flog -->
+			#createUser#, 				<!-- 登录者 -->
+			#createTime#, 				<!-- 登录时间 -->
+			#updateUser#, 				<!-- 更新者 -->
+			#updateTime#				<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.TodoCategory">
+		update an_todo_category
+		<dynamic prepend="set">
+			<!-- 任务分类名称 -->
+			<isNotNull prepend="," property="categoryName">
+				CATEGORY_NAME = #categoryName#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where CATEGORY_ID = #categoryId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_todo_category
+		where CATEGORY_ID = #categoryId#
+	</delete>
+</sqlMap>

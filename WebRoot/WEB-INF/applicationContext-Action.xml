@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- ==============================用户================================== -->
+	<!-- 用户Action -->
+	<bean name="/userAction" class="action.UserAction">
+		<property name="userService" ref="userService"></property>
+		<property name="userMetaService" ref="userMetaService"></property>
+	</bean>
+	<!-- ==============================用户元数据================================== -->
+	<!-- 用户元数据Action -->
+	<bean name="/userMetaAction" class="action.UserMetaAction">
+		<property name="userMetaService" ref="userMetaService"></property>
+	</bean>
+	<!-- ==============================登录================================== -->
+	<!-- 登录Action -->
+	<bean name="/loginAction" class="action.LoginAction">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<!-- ==============================笔记================================== -->
+	<!-- 笔记Action -->
+	<bean name="/noteAction" class="action.NoteAction">
+		<property name="noteService" ref="noteService"></property>
+	</bean>
+	<!-- ==============================笔记分类================================== -->
+	<!-- 笔记分类Action -->
+	<bean name="/noteCategoryAction" class="action.NoteCategoryAction">
+		<property name="noteCategoryService" ref="noteCategoryService"></property>
+	</bean>
+	<!-- ==============================相册===================================== -->
+	<!-- 相册Action -->
+	<bean name="/albumAction" class="action.AlbumAction">
+		<property name="albumService" ref="albumService"></property>
+	</bean>
+	<!-- ==============================图片===================================== -->
+	<!-- 相册Action -->
+	<bean name="/pictureAction" class="action.PictureAction">
+		<property name="pictureService" ref="pictureService"></property>
+	</bean>
+	<!-- ==============================账目================================== -->
+	<!-- 账目Action -->
+	<bean name="/accountAction" class="action.AccountAction">
+		<property name="accountService" ref="accountService"></property>
+	</bean>
+	<!-- ==============================账本================================== -->
+	<!-- 账目Action -->
+	<bean name="/accountBookAction" class="action.AccountBookAction">
+		<property name="accountBookService" ref="accountBookService"></property>
+	</bean>
+	<!-- ==============================账目分类================================== -->
+	<!-- 账目分类Action -->
+	<bean name="/accountCategoryAction" class="action.AccountCategoryAction">
+		<property name="accountCategoryService" ref="accountCategoryService"></property>
+	</bean>
+	<!-- ==============================任务================================== -->
+	<!-- 任务Action -->
+	<bean name="/todoAction" class="action.TodoAction">
+		<property name="todoService" ref="todoService"></property>
+	</bean>
+	<!-- ==============================任务列表================================== -->
+	<!-- 任务列表Action -->
+	<bean name="/todoCategoryAction" class="action.TodoCategoryAction">
+		<property name="todoCategoryService" ref="todoCategoryService"></property>
+	</bean>
+	<!-- ==============================订阅================================== -->
+	<!-- 订阅Action -->
+	<bean name="/feedAction" class="action.FeedAction">
+		<property name="feedService" ref="feedService"></property>
+		<property name="feedFavoriteService" ref="feedFavoriteService"></property>
+	</bean>
+	<!-- ==============================收藏订阅================================== -->
+	<!-- 收藏订阅Action -->
+	<bean name="/feedFavoriteAction" class="action.FeedFavoriteAction">
+		<property name="feedFavoriteService" ref="feedFavoriteService"></property>
+	</bean>
+	<!-- ==============================文档管理================================== -->
+	<!-- 文档管理Action -->
+	<bean name="/documentAction" class="action.DocumentAction">
+		<property name="documentService" ref="documentService"></property>
+	</bean>
+	<!-- ==============================系统设置================================== -->
+	<!-- 系统设置Action -->
+	<bean name="/settingAction" class="action.SettingAction">
+		<property name="settingService" ref="settingService"></property>
+	</bean>
+	<!-- ==============================文件上传===================================== -->
+	<!-- 文件上传Action -->
+	<bean name="/fileUploadAction" class="action.FileUploadAction"></bean>
+	<!-- ==============================签到管理================================== -->
+	<!-- 文档管理Action -->
+	<bean name="/signInAction" class="com.sxkl.sign.in.action.SignInAction">
+		<property name="signInService" ref="signInService"></property>
+	</bean>
+</beans>

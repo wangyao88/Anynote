@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_account">
+	<!-- 查询结果对象Map -->
+	<resultMap class="domain.Account" id="baseResultMap">
+		<result column="ACCOUNT_ID" jdbcType="INTEGER" property="accountId" />
+		<result column="ACCOUNT_BOOK_ID" jdbcType="INTEGER" property="accountBookId" />
+		<result column="ACCOUNT_BOOK_NAME" property="accountBookName" jdbcType="VARCHAR" />
+		<result column="CATEGORY_ID" jdbcType="INTEGER" property="categoryId" />
+		<result column="CATEGORY_NAME" property="categoryName" jdbcType="VARCHAR" />
+		<result column="ACCOUNT_DATE" jdbcType="DATE" property="accountDate" />
+		<result column="ACCOUNT_TYPE" jdbcType="CHAR" property="accountType" />
+		<result column="MONEY" jdbcType="DOUBLE" property="money" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+		<result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 账目ID -->
+			<isNotNull prepend="and" property="accountId">
+				ACCOUNT_ID = #accountId#
+			</isNotNull>
+			<!-- 账本ID -->
+			<isNotNull prepend="and" property="accountBookId">
+				ACCOUNT_BOOK_ID = #accountBookId#
+			</isNotNull>
+			<!-- 账目分类 -->
+			<isNotNull prepend="and" property="categoryId">
+				CATEGORY_ID = #categoryId#
+			</isNotNull>
+			<!-- 收支日期 -->
+			<isNotNull prepend="and" property="accountDate">
+				ACCOUNT_DATE = #accountDate#
+			</isNotNull>
+			<!-- 收支类型 -->
+			<isNotNull prepend="and" property="accountType">
+				ACCOUNT_TYPE = #accountType#
+			</isNotNull>
+			<!-- 收支金额 -->
+			<isNotNull prepend="and" property="money">
+				MONEY = #money#
+			</isNotNull>
+			<!-- 备注 -->
+			<isNotNull prepend="and" property="remark">
+				REMARK like '%$remark$%'
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			ACCOUNT_ID,				<!-- 账目ID -->
+			ACCOUNT_BOOK_ID,		<!-- 账本ID -->
+			(select ACCOUNT_BOOK_NAME 
+			from an_account_book 
+			where ACCOUNT_BOOK_ID = an_account.ACCOUNT_BOOK_ID
+			) as ACCOUNT_BOOK_NAME, <!-- 账本名称 -->
+			CATEGORY_ID,			<!-- 账目分类 -->
+			(select CATEGORY_NAME 
+			from an_account_category 
+			where CATEGORY_ID = an_account.CATEGORY_ID
+			) as CATEGORY_NAME,		<!-- 账目分类名称 -->
+			ACCOUNT_DATE,			<!-- 收支日期 -->
+			ACCOUNT_TYPE,			<!-- 收支类型 -->
+			MONEY,					<!-- 收支金额 -->
+			REMARK,					<!-- 备注 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_account
+		where ACCOUNT_ID = #accountId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.Account" resultMap="baseResultMap">
+		select 
+			ACCOUNT_ID,				<!-- 账目ID -->
+			ACCOUNT_BOOK_ID,		<!-- 账本ID -->
+			(select ACCOUNT_BOOK_NAME 
+			from an_account_book 
+			where ACCOUNT_BOOK_ID = an_account.ACCOUNT_BOOK_ID
+			) as ACCOUNT_BOOK_NAME, <!-- 账本名称 -->
+			CATEGORY_ID,			<!-- 账目分类名称 -->
+			(select CATEGORY_NAME 
+			from an_account_category 
+			where CATEGORY_ID = an_account.CATEGORY_ID
+			) as CATEGORY_NAME,		<!-- 账目分类名称 -->
+			ACCOUNT_DATE,			<!-- 收支日期 -->
+			ACCOUNT_TYPE,			<!-- 收支类型 -->
+			MONEY,					<!-- 收支金额 -->
+			REMARK,					<!-- 备注 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_account
+		<include refid="an_account.criteria_Where_Clause" />
+		order by CREATE_TIME DESC	<!-- 登录时间 -->
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.Account" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_account
+		<include refid="an_account.criteria_Where_Clause" />
+	</select>
+
+	<!-- 查询总合计值 -->
+	<select id="selectSumByCriteria" resultClass="double" parameterClass="domain.Account" >
+		select sum(MONEY) as MONEY
+		from an_account
+		<include refid="an_account.criteria_Where_Clause" />
+  </select>
+
+	<!-- 分组查询收入合计或支出合计 -->
+	<resultMap id="selectGroupSumResultMap" class="domain.Account" >
+		<result column="CATEGORY_NAME" property="categoryName" jdbcType="VARCHAR" />
+		<result column="MONEY" property="money" jdbcType="DOUBLE" />
+	</resultMap>
+	<select id="selectGroupSumByCriteria" resultMap="selectGroupSumResultMap" parameterClass="domain.Account" >
+		select 
+			b.CATEGORY_NAME as CATEGORY_NAME,						<!-- 账目分类 -->
+			SUM(a.MONEY) as MONEY									<!-- 合计值 -->
+		from an_account as a join an_account_category as b ON a.CATEGORY_ID = b.CATEGORY_ID
+		where	a.ACCOUNT_TYPE = #accountType:CHAR#					<!-- 账目类型 -->
+				and a.ACCOUNT_DATE <![CDATA[>=]]> #fromDate:DATE#	<!-- 日期From -->
+				and a.ACCOUNT_DATE <![CDATA[<=]]> #toDate:DATE#		<!-- 日期To -->
+				and a.CREATE_USER = #createUser:VARCHAR#			<!-- 登录者 -->
+	    <isNotEmpty property="accountBookId">
+	    	and a.ACCOUNT_BOOK_ID = #accountBookId:INTEGER#			<!-- 账本ID -->
+	    </isNotEmpty>
+		group by a.CATEGORY_ID										<!-- 账目分类 -->
+		order by MONEY DESC
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.Account">
+    	insert into an_account (
+			ACCOUNT_BOOK_ID,		<!-- 账本ID -->
+			CATEGORY_ID,			<!-- 账目分类 -->
+			ACCOUNT_DATE,			<!-- 收支日期 -->
+			ACCOUNT_TYPE,			<!-- 收支类型 -->
+			MONEY,					<!-- 收支金额 -->
+			REMARK,					<!-- 备注 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#accountBookId#,		<!-- 账本ID -->
+			#categoryId#,			<!-- 账目分类 -->
+			#accountDate#,			<!-- 收支日期 -->
+			#accountType#,			<!-- 收支类型 -->
+			#money#,				<!-- 收支金额 -->
+			#remark#,				<!-- 备注 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flog -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.Account">
+		update an_account
+		<dynamic prepend="set">
+			<!-- 账本ID -->
+			<isNotNull prepend="," property="accountBookId">
+				ACCOUNT_BOOK_ID = #accountBookId#
+			</isNotNull>
+			<!-- 账目分类 -->
+			<isNotNull prepend="," property="categoryId">
+				CATEGORY_ID = #categoryId#
+			</isNotNull>
+			<!-- 收支日期 -->
+			<isNotNull prepend="," property="accountDate">
+				ACCOUNT_DATE = #accountDate#
+			</isNotNull>
+			<!-- 收支类型 -->
+			<isNotNull prepend="," property="accountType">
+				ACCOUNT_TYPE = #accountType#
+			</isNotNull>
+			<!-- 收支金额 -->
+			<isNotNull prepend="," property="money">
+				MONEY = #money#
+			</isNotNull>
+			<!-- 备注 -->
+			<isNotNull prepend="," property="remark">
+				REMARK = #remark#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where ACCOUNT_ID = #accountId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_account
+    	where ACCOUNT_ID = #accountId#
+	</delete>
+	
+	<resultMap class="domain.Account" id="dayReportResultMap">
+	    <result column="MONEY" jdbcType="DOUBLE" property="money" />
+	    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTimeStr" />
+	</resultMap>
+	<select id="selectRunningDayReportSumByCriteria" resultMap="dayReportResultMap" parameterClass="domain.Account" >
+		select 
+		      sum(money) as MONEY,convert(varchar(20),
+		      create_time,23) as CREATE_TIME 
+		from an_account 
+		where 
+		     create_user = #createUser# and 
+			 (category_id in(select category_id from an_account_category where status='2'))
+		group by convert(varchar(20),create_time,23) 
+		order by convert(varchar(20),create_time,23) asc 
+	</select>
+	
+	<resultMap class="domain.Account" id="dayReportCastResultMap">
+	    <result column="MONEY" jdbcType="DOUBLE" property="money" />
+	    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+	</resultMap>
+	<select id="selectDayReportCastSumByCriteria" resultMap="dayReportCastResultMap" parameterClass="domain.Account" >
+		select 
+		    b.money as MONEY,c.category_name as CATEGORY_NAME
+		from (
+		       select 
+			          sum(money) as money,
+					  a.category_id 
+			   from an_account a 
+			   where a.category_id in (select category_id from an_account_category where status='2') and 
+			         a.create_user= #createUser# and 
+					 convert(varchar(10),account_date,23) = #accountDateStr#
+			   group by a.category_id
+		) b,an_account_category c 
+		where b.category_id = c.category_id
+	</select>
+	
+	<resultMap class="domain.Account" id="monthReportCastResultMap">
+	    <result column="MONEY" jdbcType="DOUBLE" property="money" />
+	    <result column="ACCOUNT_DATE" jdbcType="DATE" property="accountDate" />
+	</resultMap>
+	<select id="selectMonthReportSumByCriteria" resultMap="monthReportCastResultMap" parameterClass="domain.Account" >
+		select 
+		       sum(money) as MONEY,
+		       convert(varchar(10),account_date,23) as ACCOUNT_DATE 
+		from an_account 
+		where 
+		      account_type='2' and 
+		      year(account_date) = #year# 
+		      and month(account_date) =  #month# 
+	    group by convert(varchar(10),account_date,23) 
+	    order by  convert(varchar(10),account_date,23) asc
+	</select>
+	
+	<!-- 根据条件查询对象列表 -->
+	<select id="queryMonthCastReportDataForPaging" parameterClass="domain.Account" resultMap="baseResultMap">
+		select 
+			ACCOUNT_ID,				<!-- 账目ID -->
+			ACCOUNT_BOOK_ID,		<!-- 账本ID -->
+			(select ACCOUNT_BOOK_NAME 
+			from an_account_book 
+			where ACCOUNT_BOOK_ID = an_account.ACCOUNT_BOOK_ID
+			) as ACCOUNT_BOOK_NAME, <!-- 账本名称 -->
+			CATEGORY_ID,			<!-- 账目分类名称 -->
+			(select CATEGORY_NAME 
+			from an_account_category 
+			where CATEGORY_ID = an_account.CATEGORY_ID
+			) as CATEGORY_NAME,		<!-- 账目分类名称 -->
+			ACCOUNT_DATE,			<!-- 收支日期 -->
+			ACCOUNT_TYPE,			<!-- 收支类型 -->
+			MONEY,					<!-- 收支金额 -->
+			REMARK,					<!-- 备注 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_account
+	    where 
+	          account_type='2' and 
+		      year(account_date) = #year# 
+		      and month(account_date) =  #month# 
+		order by  account_date asc
+	</select>
+	
+	
+	<!-- 根据条件查询对象个数 -->
+	<select id="queryMonthCastReportCountByCriteria" parameterClass="domain.Account" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_account
+		where 
+	          account_type='2' and 
+		      year(account_date) = #year# 
+		      and month(account_date) =  #month#
+	</select>
+	
+	<!-- 根据条件查询对象列表 -->
+	<select id="queryMonthImportReportDataForPaging" parameterClass="domain.Account" resultMap="baseResultMap">
+		select 
+			ACCOUNT_ID,				<!-- 账目ID -->
+			ACCOUNT_BOOK_ID,		<!-- 账本ID -->
+			(select ACCOUNT_BOOK_NAME 
+			from an_account_book 
+			where ACCOUNT_BOOK_ID = an_account.ACCOUNT_BOOK_ID
+			) as ACCOUNT_BOOK_NAME, <!-- 账本名称 -->
+			CATEGORY_ID,			<!-- 账目分类名称 -->
+			(select CATEGORY_NAME 
+			from an_account_category 
+			where CATEGORY_ID = an_account.CATEGORY_ID
+			) as CATEGORY_NAME,		<!-- 账目分类名称 -->
+			ACCOUNT_DATE,			<!-- 收支日期 -->
+			ACCOUNT_TYPE,			<!-- 收支类型 -->
+			MONEY,					<!-- 收支金额 -->
+			REMARK,					<!-- 备注 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_account
+	    where 
+	          account_type='1' and 
+		      year(account_date) = #year# 
+		      and month(account_date) =  #month# 
+		order by  account_date asc
+	</select>
+	
+	
+	<!-- 根据条件查询对象个数 -->
+	<select id="queryMonthImportReportCountByCriteria" parameterClass="domain.Account" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_account
+		where 
+	          account_type='1' and 
+		      year(account_date) = #year# 
+		      and month(account_date) =  #month#
+	</select>
+	
+	<resultMap class="domain.Account" id="yearReportCastResultMap">
+	    <result column="MONEY" jdbcType="DOUBLE" property="money" />
+	    <result column="ACCOUNT_DATE" jdbcType="VARCHAR" property="month" />
+	</resultMap>
+	<select id="selectYearReportCastSumByCriteria" resultMap="yearReportCastResultMap" parameterClass="domain.Account" >
+		select 
+		      sum(money) as MONEY,
+			  month(account_date) as ACCOUNT_DATE 
+		from an_account 
+		where
+		      account_type='2' and 
+			  year(account_date) = #year# 
+		group by month(account_date)
+		order by  month(account_date) asc
+	</select>
+	<select id="selectYearReportImportSumByCriteria" resultMap="yearReportCastResultMap" parameterClass="domain.Account" >
+		select 
+		      sum(money) as MONEY,
+			  month(account_date) as ACCOUNT_DATE 
+		from an_account 
+		where
+		      account_type='1' and 
+			  year(account_date) = #year#
+		group by month(account_date)
+		order by  month(account_date) asc
+	</select>
+	<resultMap class="domain.Account" id="monthRateResultMap">
+	    <result column="MONEY" jdbcType="DOUBLE" property="money" />
+	</resultMap>
+	<select id="getMonthRate" resultMap="monthRateResultMap" parameterClass="domain.Account" >
+		select 
+		      sum(money) as MONEY
+		from an_account 
+		where
+		       year(account_date)=#year# and 
+			   month(account_date)=#month# and
+			   account_type='2'
+	</select>
+	
+	<resultMap class="domain.Account" id="yearRateResultMap">
+	    <result column="MONEY" jdbcType="DOUBLE" property="money" />
+	    <result column="ACCOUNT_TYPE" jdbcType="VARCHAR" property="accountType" />
+	</resultMap>
+	<select id="selectYearRateByCriteria" resultMap="yearRateResultMap" parameterClass="domain.Account" >
+		select 
+		      sum(money) as MONEY,
+			  account_type as ACCOUNT_TYPE
+		from an_account 
+		where 
+		      year(account_date)=#year# 
+		group by account_type
+		order by account_type asc
+	</select>
+</sqlMap>

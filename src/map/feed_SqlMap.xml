@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_feed">
+	<!-- 查询结果对象Map -->
+	<resultMap class="domain.Feed" id="baseResultMap">
+		<result column="FEED_ID" jdbcType="INTEGER" property="feedId" />
+		<result column="FEED_NAME" jdbcType="VARCHAR" property="feedName" />
+		<result column="FEED_URL" jdbcType="VARCHAR" property="feedUrl" />
+		<result column="FEED_COUNT" jdbcType="INTEGER" property="feedCount" />
+		<result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+		<result column="ISLEAF" jdbcType="CHAR" property="isleaf" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+		<result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 订阅ID -->
+			<isNotNull prepend="and" property="feedId">
+				FEED_ID = #feedId#
+			</isNotNull>
+			<!-- 订阅名称 -->
+			<isNotNull prepend="and" property="feedName">
+				FEED_NAME = #feedName#
+			</isNotNull>
+			<!-- 订阅URL -->
+			<isNotNull prepend="and" property="feedUrl">
+				FEED_URL = #feedUrl#
+			</isNotNull>
+			<!-- 订阅数量 -->
+			<isNotNull prepend="and" property="feedCount">
+				FEED_COUNT = #feedCount#
+			</isNotNull>
+			<!-- 父节点ID -->
+			<isNotNull prepend="and" property="parentId">
+				PARENT_ID = #parentId#
+			</isNotNull>
+			<!-- 是否为叶子节点 -->
+			<isNotNull prepend="and" property="isleaf">
+				ISLEAF = #isleaf#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flag -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			FEED_ID,				<!-- 订阅ID -->
+			FEED_NAME,				<!-- 订阅名称 -->
+			FEED_URL,				<!-- 订阅URL -->
+			FEED_COUNT,				<!-- 订阅数量 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_feed
+		where FEED_ID = #feedId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.Feed" resultMap="baseResultMap">
+		select 
+			FEED_ID,				<!-- 订阅ID -->
+			FEED_NAME,				<!-- 订阅名称 -->
+			FEED_URL,				<!-- 订阅URL -->
+			FEED_COUNT,				<!-- 订阅数量 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_feed
+		<include refid="an_feed.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.Feed" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_feed
+		<include refid="an_feed.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.Feed">
+    	insert into an_feed (
+			FEED_NAME,				<!-- 订阅名称 -->
+			FEED_URL,				<!-- 订阅URL -->
+			FEED_COUNT,				<!-- 订阅数量 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#feedName#,				<!-- 订阅名称 -->
+			#feedUrl#,				<!-- 订阅URL -->
+			#feedCount#,			<!-- 订阅数量 -->
+			#parentId#,				<!-- 父节点ID -->
+			#isleaf#,				<!-- 是否为叶子节点 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flag -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.Feed">
+		update an_feed
+		<dynamic prepend="set">
+			<!-- 订阅名称 -->
+			<isNotNull prepend="," property="feedName">
+				FEED_NAME = #feedName#
+			</isNotNull>
+			<!-- 订阅URL -->
+			<isNotNull prepend="," property="feedUrl">
+				FEED_URL = #feedUrl#
+			</isNotNull>
+			<!-- 订阅数量 -->
+			<isNotNull prepend="," property="feedCount">
+				FEED_COUNT = #feedCount#
+			</isNotNull>
+			<!-- 父节点ID -->
+			<isNotNull prepend="," property="parentId">
+				PARENT_ID = #parentId#
+			</isNotNull>
+			<!-- 是否为叶子节点 -->
+			<isNotNull prepend="," property="isleaf">
+				ISLEAF = #isleaf#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flag -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where FEED_ID = #feedId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_feed
+		where FEED_ID = #feedId#
+	</delete>
+</sqlMap>

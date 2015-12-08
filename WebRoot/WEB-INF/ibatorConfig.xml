@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ibatorConfiguration PUBLIC "-//Apache Software Foundation//DTD Apache iBATIS Ibator Configuration 1.0//EN" "http://ibatis.apache.org/dtd/ibator-config_1_0.dtd" >
+<ibatorConfiguration >
+  <classPathEntry location="D:\java_dev\workspace\Anynote\WEB-INF\lib\mysql-connector-java-5.1.7-bin.jar"/>
+  <ibatorContext id="context1" targetRuntime="Ibatis2Java5">
+  	<ibatorPlugin type="org.apache.ibatis.ibator.plugins.RenameExampleClassPlugin">
+         <property name="searchString" value="Example$" />
+         <property name="replaceString" value="Criteria" />
+    </ibatorPlugin>
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/Anynote" userId="root" password="" ></jdbcConnection>
+
+    <javaModelGenerator targetPackage="domain" targetProject="Anynote" />
+    <sqlMapGenerator targetPackage="map" targetProject="Anynote" />
+    <daoGenerator targetPackage="dao" targetProject="Anynote" type="spring" />
+    
+    <table schema="Anynote" tableName="document" >
+      <!-- <columnOverride column="???" property="???" /> -->
+    </table>
+    <table schema="Anynote" tableName="tag" >
+      <!-- <columnOverride column="???" property="???" /> -->
+    </table>
+  </ibatorContext>
+</ibatorConfiguration>

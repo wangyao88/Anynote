@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings useStatementNamespaces="true" />
+	<!-- 用户SQL -->
+	<sqlMap resource="map/user_SqlMap.xml" />
+	<!-- 用户元数据SQL -->
+	<sqlMap resource="map/user_meta_SqlMap.xml" />
+	<!-- 笔记SQL -->
+	<sqlMap resource="map/note_SqlMap.xml" />
+	<!-- 笔记分类SQL -->
+	<sqlMap resource="map/note_category_SqlMap.xml" />
+	<!-- 图片SQL -->
+	<sqlMap resource="map/picture_SqlMap.xml" />
+	<!-- 相册SQL -->
+	<sqlMap resource="map/album_SqlMap.xml" />
+	<!-- 账目SQL -->
+	<sqlMap resource="map/account_SqlMap.xml" />
+	<!-- 账本SQL -->
+	<sqlMap resource="map/account_book_SqlMap.xml" />
+	<!-- 账目分类SQL -->
+	<sqlMap resource="map/account_category_SqlMap.xml" />
+	<!-- 任务SQL -->
+	<sqlMap resource="map/todo_SqlMap.xml" />
+	<!-- 任务列表SQL -->
+	<sqlMap resource="map/todo_category_SqlMap.xml" />
+	<!-- 订阅SQL -->
+	<sqlMap resource="map/feed_SqlMap.xml" />
+	<!-- 收藏订阅SQL -->
+	<sqlMap resource="map/feed_favorite_SqlMap.xml" />
+	<!-- 文档管理SQL -->
+	<sqlMap resource="map/document_SqlMap.xml" />
+	<!-- 签到管理SQL -->
+	<sqlMap resource="com/sxkl/sign/in/map/signIn_SqlMap.xml" />
+</sqlMapConfig>

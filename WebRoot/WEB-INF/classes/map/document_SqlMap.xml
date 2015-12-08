@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="an_document" >
+	<!-- 查询结果对象Map -->
+	<resultMap id="baseResultMap" class="domain.Document" >
+		<result column="DOCUMENT_ID" property="documentId" jdbcType="INTEGER" />
+		<result column="DOCUMENT_NAME" property="documentName" jdbcType="VARCHAR" />
+		<result column="LINK" property="link" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="SIZE" property="size" jdbcType="INTEGER" />
+		<result column="TAGS" property="tags" jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+		<result column="ISLEAF" property="isleaf" jdbcType="CHAR" />
+		<result column="STATUS" property="status" jdbcType="CHAR" />
+		<result column="DELFLAG" property="delflag" jdbcType="CHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 文档ID -->
+			<isNotNull prepend="and" property="documentId">
+				DOCUMENT_ID = #documentId#
+			</isNotNull>
+			<!-- 文档名称 -->
+			<isNotNull prepend="and" property="documentName">
+				DOCUMENT_NAME like '%$documentName$%'
+			</isNotNull>
+			<!-- 文档链接 -->
+			<isNotNull prepend="and" property="link">
+				LINK = #link#
+			</isNotNull>
+			<!-- 文档类型 -->
+			<isNotNull prepend="and" property="type">
+				TYPE = #type#
+			</isNotNull>
+			<!-- 文档大小 -->
+			<isNotNull prepend="and" property="size">
+				SIZE = #size#
+			</isNotNull>
+			<!-- 文档标签 -->
+			<isNotNull prepend="and" property="tags">
+				TAGS = #tags#
+			</isNotNull>
+			<!-- 父节点ID -->
+			<isNotNull prepend="and" property="parentId">
+				PARENT_ID = #parentId#
+			</isNotNull>
+			<!-- 是否为叶子节点 -->
+			<isNotNull prepend="and" property="isleaf">
+				ISLEAF = #isleaf#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flag -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			DOCUMENT_ID,			<!-- 文档ID -->
+			DOCUMENT_NAME,			<!-- 文档名称 -->
+			LINK,					<!-- 文档链接 -->
+			TYPE,					<!-- 文档类型 -->
+			SIZE,					<!-- 文档大小 -->
+			TAGS,					<!-- 文档标签 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_document
+		where DOCUMENT_ID = #documentId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.Document" resultMap="baseResultMap">
+		select 
+			DOCUMENT_ID,			<!-- 文档ID -->
+			DOCUMENT_NAME,			<!-- 文档名称 -->
+			LINK,					<!-- 文档链接 -->
+			TYPE,					<!-- 文档类型 -->
+			SIZE,					<!-- 文档大小 -->
+			TAGS,					<!-- 文档标签 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_document
+		<include refid="an_document.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.Document" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_document
+		<include refid="an_document.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.Document">
+    	insert into an_document (
+			DOCUMENT_NAME,			<!-- 文档名称 -->
+			LINK,					<!-- 文档链接 -->
+			TYPE,					<!-- 文档类型 -->
+			SIZE,					<!-- 文档大小 -->
+			TAGS,					<!-- 文档标签 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#documentName#,			<!-- 文档名称 -->
+			#link#,					<!-- 文档链接 -->
+			#type#,					<!-- 文档类型 -->
+			#size#,					<!-- 文档大小 -->
+			#tags#,					<!-- 文档标签 -->
+			#parentId#,				<!-- 父节点ID -->
+			#isleaf#,				<!-- 是否为叶子节点 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flag -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.Document">
+		update an_document
+		<dynamic prepend="set">
+			<!-- 文档名称 -->
+			<isNotNull prepend="," property="documentName">
+				DOCUMENT_NAME = #documentName#
+			</isNotNull>
+			<!-- 文档链接 -->
+			<isNotNull prepend="," property="link">
+				LINK = #link#
+			</isNotNull>
+			<!-- 文档类型 -->
+			<isNotNull prepend="," property="type">
+				TYPE = #type#
+			</isNotNull>
+			<!-- 文档大小 -->
+			<isNotNull prepend="," property="size">
+				SIZE = #size#
+			</isNotNull>
+			<!-- 文档标签 -->
+			<isNotNull prepend="," property="tags">
+				TAGS = #tags#
+			</isNotNull>
+			<!-- 父节点ID -->
+			<isNotNull prepend="," property="parentId">
+				PARENT_ID = #parentId#
+			</isNotNull>
+			<!-- 是否为叶子节点 -->
+			<isNotNull prepend="," property="isleaf">
+				ISLEAF = #isleaf#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flag -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where DOCUMENT_ID = #documentId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_document
+		where DOCUMENT_ID = #documentId#
+	</delete>
+</sqlMap>

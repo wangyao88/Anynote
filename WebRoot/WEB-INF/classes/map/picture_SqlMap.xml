@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="an_picture" >
+	<!-- 查询结果对象Map -->
+	<resultMap id="baseResultMap" class="domain.Picture" >
+		<result column="PICTURE_ID" property="pictureId" jdbcType="INTEGER" />
+		<result column="ALBUM_ID" property="albumId" jdbcType="INTEGER" />
+		<result column="PICTURE_NAME" property="pictureName" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="LPATH" property="lpath" jdbcType="VARCHAR" />
+		<result column="SPATH" property="spath" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="CHAR" />
+		<result column="DELFLAG" property="delflag" jdbcType="CHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<!-- 查询结果对象Map（带大对象字段） -->
+	<resultMap id="resultMapWithBLOBs" class="domain.PictureWithBLOBs" extends="an_picture.baseResultMap" >
+		<result column="LDATA" property="ldata" jdbcType="LONGVARBINARY" />
+		<result column="SDATA" property="sdata" jdbcType="LONGVARBINARY" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 图片ID -->
+			<isNotNull prepend="and" property="pictureId">
+				PICTURE_ID = #pictureId#
+			</isNotNull>
+			<!-- 相册ID -->
+			<isNotNull prepend="and" property="albumId">
+				ALBUM_ID = #albumId#
+			</isNotNull>
+			<!-- 图片名称 -->
+			<isNotNull prepend="and" property="pictureName">
+				PICTURE_NAME like '%$pictureName$%'
+			</isNotNull>
+			<!-- 图片类型 -->
+			<isNotNull prepend="and" property="type">
+				TYPE = #type#
+			</isNotNull>
+			<!-- 大图片路径 -->
+			<isNotNull prepend="and" property="lpath">
+				LPATH = #lpath#
+			</isNotNull>
+			<!-- 小图片路径 -->
+			<isNotNull prepend="and" property="spath">
+				SPATH = #spath#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			PICTURE_ID,				<!-- 图片ID -->
+			ALBUM_ID,				<!-- 相册ID -->
+			PICTURE_NAME,			<!-- 图片名称 -->
+			TYPE,					<!-- 图片类型 -->
+			LPATH,					<!-- 大图片路径 -->
+			SPATH,					<!-- 小图片路径 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_picture
+		where PICTURE_ID = #pictureId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.Picture" resultMap="baseResultMap">
+		select 
+			PICTURE_ID,				<!-- 图片ID -->
+			ALBUM_ID,				<!-- 相册ID -->
+			PICTURE_NAME,			<!-- 图片名称 -->
+			TYPE,					<!-- 图片类型 -->
+			LPATH,					<!-- 大图片路径 -->
+			SPATH,					<!-- 小图片路径 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_picture
+		<include refid="an_picture.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.Picture" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_picture
+		<include refid="an_picture.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.PictureWithBLOBs">
+    	insert into an_picture (
+			ALBUM_ID,				<!-- 相册ID -->
+			PICTURE_NAME,			<!-- 图片名称 -->
+			TYPE,					<!-- 图片类型 -->
+			LDATA,					<!-- 大图片内容 -->
+			LPATH,					<!-- 大图片路径 -->
+			SDATA,					<!-- 小图片内容 -->
+			SPATH,					<!-- 小图片路径 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#albumId#,				<!-- 相册ID -->
+			#pictureName#,			<!-- 图片名称 -->
+			#type#,					<!-- 图片类型 -->
+			#ldata#,				<!-- 大图片内容 -->
+			#lpath#,				<!-- 大图片路径 -->
+			#sdata#,				<!-- 小图片内容 -->
+			#spath#,				<!-- 小图片路径 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flog -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.PictureWithBLOBs">
+		update an_picture
+		<dynamic prepend="set">
+			<!-- 相册ID -->
+			<isNotNull prepend="," property="albumId">
+				ALBUM_ID = #albumId#
+			</isNotNull>
+			<!-- 图片名称 -->
+			<isNotNull prepend="," property="pictureName">
+				PICTURE_NAME = #pictureName#
+			</isNotNull>
+			<!-- 图片类型 -->
+			<isNotNull prepend="," property="type">
+				TYPE = #type#
+			</isNotNull>
+			<!-- 大图片内容 -->
+			<isNotNull prepend="," property="ldata">
+				LDATA = #ldata#
+			</isNotNull>
+			<!-- 大图片路径 -->
+			<isNotNull prepend="," property="lpath">
+				LPATH = #lpath#
+			</isNotNull>
+			<!-- 小图片内容 -->
+			<isNotNull prepend="," property="sdata">
+				SDATA = #sdata#
+			</isNotNull>
+			<!-- 小图片路径 -->
+			<isNotNull prepend="," property="spath">
+				SPATH = #spath#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where PICTURE_ID = #pictureId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_picture
+		where PICTURE_ID = #pictureId#
+	</delete>
+</sqlMap>

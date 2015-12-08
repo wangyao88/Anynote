@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+   
+         http://www.apache.org/licenses/LICENSE-2.0
+   
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+        "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!--
+  Default configuration file for examples application.
+  Each module also has its own struts-config under: /WEB-INF/$MODULE/
+  @version $Revision: 1.9 $ $Date: 2006-12-03 11:32:52 -0600 (Sun, 03 Dec 2006) $
+-->
+<struts-config>
+	<global-exceptions></global-exceptions>
+	<global-forwards></global-forwards>
+	<action-mappings>
+		<!-- ==============================用户============================= -->
+		<!-- 用户 -->
+		<action path="/userAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method">
+    	</action>
+    	<!-- ==============================用户元数据============================= -->
+		<!-- 用户元数据 -->
+		<action path="/userMetaAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method">
+    	</action>
+    	<!-- ==============================登录============================= -->
+		<!-- 登录 -->
+		<action path="/loginAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method">
+    		<forward name="success" path="/websrc/page/index.jsp"></forward>
+    		<forward name="failure" path="/websrc/page/login.jsp"></forward>
+    	</action>
+    	<!-- ==============================笔记================================== -->
+		<!-- 笔记Action -->
+		<action path="/noteAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================笔记分类=============================== -->
+		<!-- 笔记分类Action -->
+		<action path="/noteCategoryAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================相册=================================== -->
+		<!-- 笔记分类Action -->
+		<action path="/albumAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================图片=================================== -->
+		<!-- 笔记Action -->
+		<action path="/pictureAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================账目================================== -->
+		<!-- 账目Action -->
+		<action path="/accountAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================账本================================== -->
+		<!-- 账目Action -->
+		<action path="/accountBookAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================账目分类=============================== -->
+		<!-- 账目分类Action -->
+		<action path="/accountCategoryAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================任务=============================== -->
+		<!-- 任务Action -->
+		<action path="/todoAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================任务列表=============================== -->
+		<!-- 任务列表Action -->
+		<action path="/todoCategoryAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================订阅=============================== -->
+		<!-- 订阅Action -->
+		<action path="/feedAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================收藏订阅=============================== -->
+		<!-- 收藏订阅Action -->
+		<action path="/feedFavoriteAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================文档管理=============================== -->
+		<!-- 文档管理Action -->
+		<action path="/documentAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================系统设置=============================== -->
+		<!-- 系统设置Action -->
+		<action path="/settingAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================文件上传=================================== -->
+		<!-- 文件上传Action -->
+		<action path="/fileUploadAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+    	<!-- ==============================文签到管理=============================== -->
+		<!-- 文档管理Action -->
+		<action path="/signInAction" 
+			type="org.springframework.web.struts.DelegatingActionProxy"
+    		parameter="method"
+    		validate="false"
+    		scope="request">
+    	</action>
+	</action-mappings>
+</struts-config>

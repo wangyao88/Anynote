@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_account_book">
+	<!-- 查询结果对象Map -->
+	<resultMap class="domain.AccountBook" id="baseResultMap">
+		<result column="ACCOUNT_BOOK_ID" jdbcType="INTEGER" property="accountBookId" />
+		<result column="ACCOUNT_BOOK_NAME" jdbcType="VARCHAR" property="accountBookName" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+		<result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 账本ID -->
+			<isNotNull prepend="and" property="accountBookId">
+				ACCOUNT_BOOK_ID = #accountBookId#
+			</isNotNull>
+			<!-- 账本名称 -->
+			<isNotNull prepend="and" property="accountBookName">
+				ACCOUNT_BOOK_NAME = #accountBookName#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			ACCOUNT_BOOK_ID,			<!-- 账本ID -->
+			ACCOUNT_BOOK_NAME,			<!-- 账本名称 -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flog -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		from an_account_book
+		where ACCOUNT_BOOK_ID = #accountBookId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.AccountBook" resultMap="baseResultMap">
+		select 
+			ACCOUNT_BOOK_ID,			<!-- 账本ID -->
+			ACCOUNT_BOOK_NAME,			<!-- 账本名称 -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flog -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		from an_account_book
+		<include refid="an_account_book.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.AccountBook" resultClass="java.lang.Integer">
+		select 
+			count(1)
+		from an_account_book
+		<include refid="an_account_book.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.AccountBook">
+    	insert into an_account_book (
+			ACCOUNT_BOOK_NAME,			<!-- 账本名称 -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flog -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		)
+		values (
+			#accountBookName#, 			<!-- 账本名称 -->
+			#status#, 					<!-- 状态 -->
+			#delflag#,					<!-- 删除Flog -->
+			#createUser#, 				<!-- 登录者 -->
+			#createTime#, 				<!-- 登录时间 -->
+			#updateUser#, 				<!-- 更新者 -->
+			#updateTime#				<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.AccountBook">
+		update an_account_book
+		<dynamic prepend="set">
+			<!-- 账本名称 -->
+			<isNotNull prepend="," property="accountBookName">
+				ACCOUNT_BOOK_NAME = #accountBookName#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where ACCOUNT_BOOK_ID = #accountBookId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_account_book
+    	where ACCOUNT_BOOK_ID = #accountBookId#
+	</delete>
+</sqlMap>

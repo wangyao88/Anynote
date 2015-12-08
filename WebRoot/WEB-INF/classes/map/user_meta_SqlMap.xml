@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="an_user_meta" >
+	<!-- 查询结果对象Map -->
+	<resultMap id="baseResultMap" class="domain.UserMeta" >
+		<result column="USER_META_ID" property="userMetaId" jdbcType="INTEGER" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="META_KEY" property="metaKey" jdbcType="VARCHAR" />
+		<result column="META_VALUE" property="metaValue" jdbcType="VARCHAR" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" property="delflag" jdbcType="CHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 用户元数据ID -->
+			<isNotNull prepend="and" property="userMetaId">
+				USER_META_ID = #userMetaId#
+			</isNotNull>
+			<!-- 用户ID -->
+			<isNotNull prepend="and" property="userId">
+				USER_ID = #userId#
+			</isNotNull>
+			<!-- 元数据KEY -->
+			<isNotNull prepend="and" property="metaKey">
+				META_KEY = #metaKey#
+			</isNotNull>
+			<!-- 元数据VALUE -->
+			<isNotNull prepend="and" property="metaValue">
+				META_VALUE = #metaValue#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			USER_META_ID,				<!-- 用户元数据ID -->
+			USER_ID,					<!-- 用户ID -->
+			META_KEY,					<!-- 元数据KEY -->
+			META_VALUE,					<!-- 元数据VALUE -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flag -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		from an_user_meta
+		where USER_META_ID = #userMetaId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.UserMeta" resultMap="baseResultMap">
+		select 
+			USER_META_ID,				<!-- 用户元数据ID -->
+			USER_ID,					<!-- 用户ID -->
+			META_KEY,					<!-- 元数据KEY -->
+			META_VALUE,					<!-- 元数据VALUE -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flag -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		from an_user_meta
+		<include refid="an_user_meta.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.UserMeta" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_user_meta
+		<include refid="an_user_meta.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.UserMeta">
+    	insert into an_user_meta (
+			USER_ID,					<!-- 用户ID -->
+			META_KEY,					<!-- 元数据KEY -->
+			META_VALUE,					<!-- 元数据VALUE -->
+			STATUS,						<!-- 状态 -->
+			DELFLAG,					<!-- 删除Flag -->
+			CREATE_USER,				<!-- 登录者 -->
+			CREATE_TIME,				<!-- 登录时间 -->
+			UPDATE_USER,				<!-- 更新者 -->
+			UPDATE_TIME					<!-- 更新时间 -->
+		)
+		values (
+			#userId#,					<!-- 用户ID -->
+			#metaKey#,					<!-- 元数据KEY -->
+			#metaValue#,				<!-- 元数据VALUE -->
+			#status#,					<!-- 状态 -->
+			#delflag#,					<!-- 删除Flag -->
+			#createUser#,				<!-- 登录者 -->
+			#createTime#,				<!-- 登录时间 -->
+			#updateUser#,				<!-- 更新者 -->
+			#updateTime#				<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.UserMeta">
+		update an_user_meta
+		<dynamic prepend="set">
+			<!-- 用户ID -->
+			<isNotNull prepend="," property="userId">
+				USER_ID = #userId#
+			</isNotNull>
+			<!-- 元数据KEY -->
+			<isNotNull prepend="," property="metaKey">
+				META_KEY = #metaKey#
+			</isNotNull>
+			<!-- 元数据VALUE -->
+			<isNotNull prepend="," property="metaValue">
+				META_VALUE = #metaValue#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where USER_META_ID = #userMetaId#
+	</update>
+	
+	<!-- 根据用户ID和元数据Key更新对象 -->
+	<update id="updateByUserIdAndMetaKey" parameterClass="domain.UserMeta">
+		update an_user_meta
+		<dynamic prepend="set">
+			<!-- 用户ID -->
+			<isNotNull prepend="," property="userId">
+				USER_ID = #userId#
+			</isNotNull>
+			<!-- 元数据KEY -->
+			<isNotNull prepend="," property="metaKey">
+				META_KEY = #metaKey#
+			</isNotNull>
+			<!-- 元数据VALUE -->
+			<isNotNull prepend="," property="metaValue">
+				META_VALUE = #metaValue#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where	USER_ID = #userId#
+		and		META_KEY = #metaKey#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_user_meta
+		where USER_META_ID = #userMetaId#
+	</delete>
+	
+	<!-- 根据用户ID删除对象 -->
+	<delete id="deleteByUserId" parameterClass="java.lang.String">
+    	delete from an_user_meta
+		where USER_ID = #userId#
+	</delete>
+</sqlMap>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_user">
+	<!-- 查询结果对象Map -->
+	<resultMap class="domain.User" id="baseResultMap">
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="ROLE" jdbcType="CHAR" property="role" />
+		<result column="SEX" jdbcType="CHAR" property="sex" />
+		<result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+		<result column="EMAIL" jdbcType="VARCHAR" property="email" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+		<result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 用户ID -->
+			<isNotNull prepend="and" property="userId">
+				USER_ID = #userId#
+			</isNotNull>
+			<!-- 用户名 -->
+			<isNotNull prepend="and" property="userName">
+				USER_NAME like '%$userName$%'
+			</isNotNull>
+			<!-- 密码 -->
+			<isNotNull prepend="and" property="password">
+				PASSWORD = #password#
+			</isNotNull>
+			<!-- 权限 -->
+			<isNotNull prepend="and" property="role">
+				ROLE in ($role$)
+			</isNotNull>
+			<!-- 性别 -->
+			<isNotNull prepend="and" property="sex">
+				SEX = #sex#
+			</isNotNull>
+			<!-- 生日 -->
+			<isNotNull prepend="and" property="birthday">
+				BIRTHDAY = #birthday#
+			</isNotNull>
+			<!-- 邮箱 -->
+			<isNotNull prepend="and" property="email">
+				EMAIL = #email#
+			</isNotNull>
+			<!-- 电话 -->
+			<isNotNull prepend="and" property="phone">
+				PHONE = #phone#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flag -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.String">
+		select 
+			USER_ID,				<!-- 用户ID -->
+			USER_NAME,				<!-- 用户名 -->
+			PASSWORD,				<!-- 密码 -->
+			ROLE,					<!-- 权限 -->
+			SEX,					<!-- 性别 -->
+			BIRTHDAY,				<!-- 生日 -->
+			EMAIL,					<!-- 邮箱 -->
+			PHONE,					<!-- 电话 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME			<!-- 更新时间 -->
+		from an_user
+		where USER_ID = #userId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.User" resultMap="baseResultMap">
+		select 
+			USER_ID,				<!-- 用户ID -->
+			USER_NAME,				<!-- 用户名 -->
+			PASSWORD,				<!-- 密码 -->
+			ROLE,					<!-- 权限 -->
+			SEX,					<!-- 性别 -->
+			BIRTHDAY,				<!-- 生日 -->
+			EMAIL,					<!-- 邮箱 -->
+			PHONE,					<!-- 电话 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_user
+		<include refid="an_user.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.User" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_user
+		<include refid="an_user.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.User">
+    	insert into an_user (
+    		USER_ID,				<!-- 用户ID -->
+			USER_NAME,				<!-- 用户名 -->
+			PASSWORD,				<!-- 密码 -->
+			ROLE,					<!-- 权限 -->
+			SEX,					<!-- 性别 -->
+			BIRTHDAY,				<!-- 生日 -->
+			EMAIL,					<!-- 邮箱 -->
+			PHONE,					<!-- 电话 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flag -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#userId#,				<!-- 用户ID -->
+			#userName#,				<!-- 用户名 -->
+			#password#,				<!-- 密码 -->
+			#role#,					<!-- 权限 -->
+			#sex#,					<!-- 性别 -->
+			#birthday#,				<!-- 生日 -->
+			#email#,				<!-- 邮箱 -->
+			#phone#,				<!-- 电话 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flag -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.User">
+		update an_user
+		<dynamic prepend="set">
+			<!-- 用户名 -->
+			<isNotNull prepend="," property="userName">
+				USER_NAME = #userName#
+			</isNotNull>
+			<!-- 密码 -->
+			<isNotNull prepend="," property="password">
+				PASSWORD = #password#
+			</isNotNull>
+			<!-- 权限 -->
+			<isNotNull prepend="," property="role">
+				ROLE = #role#
+			</isNotNull>
+			<!-- 性别 -->
+			<isNotNull prepend="," property="sex">
+				SEX = #sex#
+			</isNotNull>
+			<!-- 生日 -->
+			<isNotNull prepend="," property="birthday">
+				BIRTHDAY = #birthday#
+			</isNotNull>
+			<!-- 邮箱 -->
+			<isNotNull prepend="," property="email">
+				EMAIL = #email#
+			</isNotNull>
+			<!-- 电话 -->
+			<isNotNull prepend="," property="phone">
+				PHONE = #phone#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flag -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where USER_ID = #userId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.String">
+    	delete from an_user
+		where USER_ID = #userId#
+	</delete>
+</sqlMap>

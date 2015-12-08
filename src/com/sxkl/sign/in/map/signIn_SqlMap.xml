@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_sign_in">
+	<!-- 查询结果对象Map -->
+	<resultMap class="com.sxkl.sign.in.po.SignIn" id="baseResultMap">
+		<result column="SI_ID" jdbcType="VARCHAR" property="id" />
+		<result column="SI_SIGN_USER_ID" jdbcType="VARCHAR" property="signUserId" />
+		<result column="SI_SIGN_USER_NAME" property="signUserName" jdbcType="VARCHAR" />
+		<result column="SI_DATE" jdbcType="TIMESTAMP" property="date" />
+		<result column="SI_ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="SI_IP" jdbcType="VARCHAR" property="ip" />
+		<result column="SI_REMARK" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="id">
+				SI_ID = #id#
+			</isNotNull>
+			<isNotNull prepend="and" property="signUserId">
+				SI_SIGN_USER_ID = #signUserId#
+			</isNotNull>
+			<isNotNull prepend="and" property="signUserName">
+				SI_SIGN_USER_NAME = #signUserName#
+			</isNotNull>
+			<isNotNull prepend="and" property="date">
+				SI_DATE = #date#
+			</isNotNull>
+			<isNotNull prepend="and" property="address">
+				SI_ADDRESS like '%$address$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="ip">
+				SI_IP = #ip#
+			</isNotNull>
+			<isNotNull prepend="and" property="remark">
+				SI_REMARK = '%$remark$%'
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.String">
+		select 
+			SI_ID,
+			SI_SIGN_USER_ID,
+			SI_SIGN_USER_NAME,
+			SI_DATE,
+			SI_ADDRESS,
+			SI_IP,
+			SI_REMARK
+		from an_sign_in
+		where SI_ID = #id#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="com.sxkl.sign.in.po.SignIn" resultMap="baseResultMap">
+		select 
+			SI_ID,
+			SI_SIGN_USER_ID,
+			SI_SIGN_USER_NAME,
+			SI_DATE,
+			SI_ADDRESS,
+			SI_IP,
+			SI_REMARK
+		from an_sign_in
+		<include refid="an_sign_in.criteria_Where_Clause" />
+		order by SI_DATE DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="com.sxkl.sign.in.po.SignIn" resultClass="java.lang.Integer">
+		select 
+			count(1)
+		from an_sign_in
+		<include refid="an_sign_in.criteria_Where_Clause" />
+	</select>
+
+	
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="com.sxkl.sign.in.po.SignIn">
+    	insert into an_sign_in (
+			SI_ID,
+			SI_SIGN_USER_ID,
+			SI_SIGN_USER_NAME,
+			SI_DATE,
+			SI_ADDRESS,
+			SI_IP,
+			SI_REMARK
+		)
+		values (
+			#id#,		
+			#signUserId#,			
+			#signUserName#,	
+			#date#,			
+			#address#,
+			#ip#,				
+			#remark#		
+		)
+	</insert>
+
+	
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.String">
+    	delete from an_sign_in
+    	where SI_ID = #id#
+	</delete>
+</sqlMap>

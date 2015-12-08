@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_todo">
+	<!-- 查询结果对象Map -->
+	<resultMap class="domain.Todo" id="baseResultMap">
+		<result column="TODO_ID" jdbcType="INTEGER" property="todoId" />
+		<result column="CATEGORY_ID" jdbcType="INTEGER" property="categoryId" />
+		<result column="CATEGORY_NAME" property="categoryName" jdbcType="VARCHAR" />
+		<result column="TODO_CONTENT" jdbcType="VARCHAR" property="todoContent" />
+		<result column="DEAL_DATE" jdbcType="TIMESTAMP" property="dealDate" />
+		<result column="LEVEL" jdbcType="CHAR" property="level" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+		<result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	
+	<resultMap class="domain.Todo" id="monthResultMap">
+	    <result column="COUNT" jdbcType="INTEGER" property="count" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+	</resultMap>
+	
+	<resultMap class="domain.Todo" id="yearResultMap">
+	    <result column="COUNT" jdbcType="INTEGER" property="count" />
+		<result column="MONTH" jdbcType="INTEGER" property="month" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 任务ID -->
+			<isNotNull prepend="and" property="todoId">
+				TODO_ID = #todoId#
+			</isNotNull>
+			<!-- 任务分类ID -->
+			<isNotNull prepend="and" property="categoryId">
+				CATEGORY_ID = #categoryId#
+			</isNotNull>
+			<!-- 任务内容 -->
+			<isNotNull prepend="and" property="todoContent">
+				TODO_CONTENT like '%$todoContent$%'
+			</isNotNull>
+			<!-- 处理日期 -->
+			<isNotNull prepend="and" property="dealDate">
+				DEAL_DATE = #dealDate#
+			</isNotNull>
+			<!-- 优先级 -->
+			<isNotNull prepend="and" property="level">
+				LEVEL = #level#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			TODO_ID,				<!-- 任务ID -->
+			CATEGORY_ID,			<!-- 任务分类ID -->
+			TODO_CONTENT,			<!-- 任务内容 -->
+			DEAL_DATE,				<!-- 处理日期 -->
+			LEVEL,					<!-- 优先级 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_todo
+		where TODO_ID = #todoId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.Todo" resultMap="baseResultMap">
+		select 
+			TODO_ID,				<!-- 任务ID -->
+			CATEGORY_ID,			<!-- 任务分类ID -->
+			(select CATEGORY_NAME 
+			from an_todo_category 
+			where CATEGORY_ID = an_todo.CATEGORY_ID
+			) as CATEGORY_NAME,		<!-- 任务分类名称 -->
+			TODO_CONTENT,			<!-- 任务内容 -->
+			DEAL_DATE,				<!-- 处理日期 -->
+			LEVEL,					<!-- 优先级 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_todo
+		<include refid="an_todo.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.Todo" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_todo
+		<include refid="an_todo.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.Todo">
+    	insert into an_todo (
+			CATEGORY_ID,			<!-- 任务分类ID -->
+			TODO_CONTENT,			<!-- 任务内容 -->
+			DEAL_DATE,				<!-- 处理日期 -->
+			LEVEL,					<!-- 优先级 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#categoryId#,			<!-- 任务分类ID -->
+			#todoContent#,			<!-- 任务内容 -->
+			#dealDate#,				<!-- 处理日期 -->
+			#level#,				<!-- 优先级 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flog -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.Todo">
+		update an_todo
+		<dynamic prepend="set">
+			<!-- 任务分类ID -->
+			<isNotNull prepend="," property="categoryId">
+				CATEGORY_ID = #categoryId#
+			</isNotNull>
+			<!-- 任务内容 -->
+			<isNotNull prepend="," property="todoContent">
+				TODO_CONTENT = #todoContent#
+			</isNotNull>
+			<!-- 处理日期 -->
+			<isNotNull prepend="," property="dealDate">
+				DEAL_DATE = #dealDate#
+			</isNotNull>
+			<!-- 优先级 -->
+			<isNotNull prepend="," property="level">
+				LEVEL = #level#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where TODO_ID = #todoId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_todo
+    	where TODO_ID = #todoId#
+	</delete>
+	
+	<!-- 根据条件查询对象个数 -->
+	<select id="queryCountAndCategoryByCriteria" parameterClass="domain.Todo" resultMap="monthResultMap">
+		 select 
+		       count(1) as COUNT, delflag 
+		 from an_todo 
+		 where 
+		      month(deal_date) = #month# 
+		 group by delflag 
+	</select>
+	
+	<!-- 根据条件查询对象个数 -->
+	<select id="queryCountAndYearByCriteria" parameterClass="domain.Todo" resultMap="yearResultMap">
+		 select 
+		        count(1) as COUNT,
+		        month(deal_date) as MONTH 
+		 from an_todo
+		 where delflag='2' and year(deal_date) = #year# 
+		 group by month(deal_date)
+	</select>
+	
+	<insert id="saveBatch" parameterClass ="java.util.List">
+    	insert into an_todo (
+			CATEGORY_ID,			<!-- 任务分类ID -->
+			TODO_CONTENT,			<!-- 任务内容 -->
+			DEAL_DATE,				<!-- 处理日期 -->
+			LEVEL,					<!-- 优先级 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values 
+		<iterate  conjunction ="," >  
+			<![CDATA[  
+				(
+					#todo[].categoryId#,			<!-- 任务分类ID -->
+					#todo[].todoContent#,			<!-- 任务内容 -->
+					#todo[].dealDate#,				<!-- 处理日期 -->
+					#todo[].level#,				<!-- 优先级 -->
+					#todo[].status#,				<!-- 状态 -->
+					#todo[].delflag#,				<!-- 删除Flog -->
+					#todo[].createUser#,			<!-- 登录者 -->
+					#todo[].createTime#,			<!-- 登录时间 -->
+					#todo[].updateUser#,			<!-- 更新者 -->
+					#todo[].updateTime#			<!-- 更新时间 -->
+				)
+				  ]]>  
+		 </iterate >  
+	</insert>
+</sqlMap>

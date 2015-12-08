@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- 用户Dao -->
+	<bean id="userDao" class="dao.impl.UserDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 用户元数据Dao -->
+	<bean id="userMetaDao" class="dao.impl.UserMetaDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 分类Dao -->
+	<bean id="noteCategoryDao" class="dao.impl.NoteCategoryDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 笔记Dao -->
+	<bean id="noteDao" class="dao.impl.NoteDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 图片Dao -->
+	<bean id="pictureDao" class="dao.impl.PictureDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 相册Dao -->
+	<bean id="albumDao" class="dao.impl.AlbumDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 账目Dao -->
+	<bean id="accountDao" class="dao.impl.AccountDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 账本Dao -->
+	<bean id="accountBookDao" class="dao.impl.AccountBookDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 账目分类Dao -->
+	<bean id="accountCategoryDao" class="dao.impl.AccountCategoryDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 任务Dao -->
+	<bean id="todoDao" class="dao.impl.TodoDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 任务列表Dao -->
+	<bean id="todoCategoryDao" class="dao.impl.TodoCategoryDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 订阅Dao -->
+	<bean id="feedDao" class="dao.impl.FeedDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 收藏订阅Dao -->
+	<bean id="feedFavoriteDao" class="dao.impl.FeedFavoriteDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 文档管理Dao -->
+	<bean id="documentDao" class="dao.impl.DocumentDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<!-- 签到管理Dao -->
+	<bean id="signInDao" class="com.sxkl.sign.in.dao.impl.SingnInDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+</beans>

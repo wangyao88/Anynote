@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="an_album">
+	<!-- 查询结果对象Map -->
+	<resultMap class="domain.Album" id="baseResultMap">
+		<result column="ALBUM_ID" jdbcType="INTEGER" property="albumId" />
+		<result column="ALBUM_NAME" jdbcType="VARCHAR" property="albumName" />
+		<result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+		<result column="ISLEAF" jdbcType="CHAR" property="isleaf" />
+		<result column="STATUS" jdbcType="CHAR" property="status" />
+		<result column="DELFLAG" jdbcType="CHAR" property="delflag" />
+		<result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="criteria_Where_Clause">
+		<dynamic prepend="where">
+			<!-- 相册ID -->
+			<isNotNull prepend="and" property="albumId">
+				ALBUM_ID = #albumId#
+			</isNotNull>
+			<!-- 相册名称 -->
+			<isNotNull prepend="and" property="albumName">
+				ALBUM_NAME = #albumName#
+			</isNotNull>
+			<!-- 父节点ID -->
+			<isNotNull prepend="and" property="parentId">
+				PARENT_ID = #parentId#
+			</isNotNull>
+			<!-- 是否为叶子节点 -->
+			<isNotNull prepend="and" property="isleaf">
+				ISLEAF = #isleaf#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="and" property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="and" property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="and" property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="and" property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="and" property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<!-- 根据主键查询对象 -->
+	<select id="selectByPrimaryKey" resultMap="baseResultMap" parameterClass="java.lang.Integer">
+		select 
+			ALBUM_ID,				<!-- 相册ID -->
+			ALBUM_NAME,				<!-- 相册名称 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_album
+		where ALBUM_ID = #albumId#
+	</select>
+
+	<!-- 根据条件查询对象列表 -->
+	<select id="selectByCriteria" parameterClass="domain.Album" resultMap="baseResultMap">
+		select 
+			ALBUM_ID,				<!-- 相册ID -->
+			ALBUM_NAME,				<!-- 相册名称 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		from an_album
+		<include refid="an_album.criteria_Where_Clause" />
+		order by CREATE_TIME DESC
+	</select>
+
+	<!-- 根据条件查询对象个数 -->
+	<select id="countByCriteria" parameterClass="domain.Album" resultClass="java.lang.Integer">
+		select 
+			count(*)
+		from an_album
+		<include refid="an_album.criteria_Where_Clause" />
+	</select>
+
+	<!-- 插入对象 -->
+	<insert id="insert" parameterClass="domain.Album">
+    	insert into an_album (
+			ALBUM_NAME,				<!-- 相册名称 -->
+			PARENT_ID,				<!-- 父节点ID -->
+			ISLEAF,					<!-- 是否为叶子节点 -->
+			STATUS,					<!-- 状态 -->
+			DELFLAG,				<!-- 删除Flog -->
+			CREATE_USER,			<!-- 登录者 -->
+			CREATE_TIME,			<!-- 登录时间 -->
+			UPDATE_USER,			<!-- 更新者 -->
+			UPDATE_TIME				<!-- 更新时间 -->
+		)
+		values (
+			#albumName#,			<!-- 相册名称 -->
+			#parentId#,				<!-- 父节点ID -->
+			#isleaf#,				<!-- 是否为叶子节点 -->
+			#status#,				<!-- 状态 -->
+			#delflag#,				<!-- 删除Flog -->
+			#createUser#,			<!-- 登录者 -->
+			#createTime#,			<!-- 登录时间 -->
+			#updateUser#,			<!-- 更新者 -->
+			#updateTime#			<!-- 更新时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键更新对象 -->
+	<update id="updateByPrimaryKey" parameterClass="domain.Album">
+		update an_album
+		<dynamic prepend="set">
+			<!-- 相册名称 -->
+			<isNotNull prepend="," property="albumName">
+				ALBUM_NAME = #albumName#
+			</isNotNull>
+			<!-- 父节点ID -->
+			<isNotNull prepend="," property="parentId">
+				PARENT_ID = #parentId#
+			</isNotNull>
+			<!-- 是否为叶子节点 -->
+			<isNotNull prepend="," property="isleaf">
+				ISLEAF = #isleaf#
+			</isNotNull>
+			<!-- 状态 -->
+			<isNotNull prepend="," property="status">
+				STATUS = #status#
+			</isNotNull>
+			<!-- 删除Flog -->
+			<isNotNull prepend="," property="delflag">
+				DELFLAG = #delflag#
+			</isNotNull>
+			<!-- 登录者 -->
+			<isNotNull prepend="," property="createUser">
+				CREATE_USER = #createUser#
+			</isNotNull>
+			<!-- 登录时间 -->
+			<isNotNull prepend="," property="createTime">
+				CREATE_TIME = #createTime#
+			</isNotNull>
+			<!-- 更新者 -->
+			<isNotNull prepend="," property="updateUser">
+				UPDATE_USER = #updateUser#
+			</isNotNull>
+			<!-- 更新时间 -->
+			<isNotNull prepend="," property="updateTime">
+				UPDATE_TIME = #updateTime#
+			</isNotNull>
+    	</dynamic>
+		where ALBUM_ID = #albumId#
+	</update>
+
+	<!-- 根据主键删除对象 -->
+	<delete id="deleteByPrimaryKey" parameterClass="java.lang.Integer">
+    	delete from an_album
+		where ALBUM_ID = #albumId#
+	</delete>
+</sqlMap>

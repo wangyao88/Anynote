@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"  
+    xmlns:context="http://www.springframework.org/schema/context"   
+    xsi:schemaLocation="http://www.springframework.org/schema/beans        
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd       
+    http://www.springframework.org/schema/context        
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+    http://www.directwebremoting.org/schema/spring-dwr  
+    http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
+	<!-- 用户Service -->
+	<bean id="userService" class="service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+		<property name="userMetaService" ref="userMetaService"></property>
+	</bean>
+	<!-- 用户配置Service -->
+	<bean id="userMetaService" class="service.impl.UserMetaServiceImpl">
+		<property name="userMetaDao" ref="userMetaDao"></property>
+	</bean>
+	<!-- 分类Service -->
+	<bean id="noteCategoryService" class="service.impl.NoteCategoryServiceImpl">
+		<property name="noteCategoryDao" ref="noteCategoryDao"></property>
+		<property name="noteService" ref="noteService"></property>
+	</bean>
+	<!-- 笔记Service -->
+	<bean id="noteService" class="service.impl.NoteServiceImpl">
+		<property name="noteDao" ref="noteDao"></property>
+	</bean>
+	<!-- 图片Service -->
+	<bean id="pictureService" class="service.impl.PictureServiceImpl">
+		<property name="pictureDao" ref="pictureDao"></property>
+	</bean>
+	<!-- 相册Service -->
+	<bean id="albumService" class="service.impl.AlbumServiceImpl">
+		<property name="albumDao" ref="albumDao"></property>
+		<property name="pictureService" ref="pictureService"></property>
+	</bean>
+	<!-- 账目Service -->
+	<bean id="accountService" class="service.impl.AccountServiceImpl">
+		<property name="accountDao" ref="accountDao"></property>
+	</bean>
+	<!-- 账本Service -->
+	<bean id="accountBookService" class="service.impl.AccountBookServiceImpl">
+		<property name="accountBookDao" ref="accountBookDao"></property>
+	</bean>	
+	<!-- 账目分类Service -->
+	<bean id="accountCategoryService" class="service.impl.AccountCategoryServiceImpl">
+		<property name="accountCategoryDao" ref="accountCategoryDao"></property>
+	</bean>
+	<!-- 任务Service -->
+	<bean id="todoService" class="service.impl.TodoServiceImpl">
+		<property name="todoDao" ref="todoDao"></property>
+	</bean>
+	<!-- 任务分类Service -->
+	<bean id="todoCategoryService" class="service.impl.TodoCategoryServiceImpl">
+		<property name="todoService" ref="todoService"></property>
+		<property name="todoCategoryDao" ref="todoCategoryDao"></property>
+	</bean>
+	<!-- 订阅Service -->
+	<bean id="feedService" class="service.impl.FeedServiceImpl">
+		<property name="feedDao" ref="feedDao"></property>
+	</bean>
+	<!-- 收藏订阅Service -->
+	<bean id="feedFavoriteService" class="service.impl.FeedFavoriteServiceImpl">
+		<property name="feedFavoriteDao" ref="feedFavoriteDao"></property>
+	</bean>
+	<!-- 文档管理Service -->
+	<bean id="documentService" class="service.impl.DocumentServiceImpl">
+		<property name="documentDao" ref="documentDao"></property>
+	</bean>
+	<!-- 系统设置Service -->
+	<bean id="settingService" class="service.impl.SettingServiceImpl">
+	</bean>
+	<!-- 签到管理Service -->
+	<bean id="signInService" class="com.sxkl.sign.in.service.impl.SignInServiceImpl">
+		<property name="signInDao" ref="signInDao"></property>
+	</bean>
+</beans>
