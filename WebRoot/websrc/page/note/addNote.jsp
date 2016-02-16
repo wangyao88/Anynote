@@ -76,7 +76,7 @@
 		                        fieldLabel: '标题',
 		                        anchor:'100%',
 		                        allowBlank:false,
-		                        maxLength: 50
+		                        maxLength: 150
 		        	},{// 笔记内容
 		                       xtype: 'AnynoteHtmleditor',
 		                       name:'content',
